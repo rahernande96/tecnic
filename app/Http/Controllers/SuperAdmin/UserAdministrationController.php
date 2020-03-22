@@ -82,7 +82,17 @@ class UserAdministrationController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(!$user = User::find($id))
+        {
+            return abort(404);
+        }
+
+        $roles = Role::where('name','!=','SuperAdmin')->get();
+        
+        return view('superAdmin.usersAdministration.edit',[
+            'user'=>$user,
+            'roles'=>$roles,
+        ]);
     }
 
     /**
@@ -94,7 +104,29 @@ class UserAdministrationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required','string', 'email', 'max:255', 'unique:users'],
+            'password' => ['string', 'min:8'],
+            'role' => ['required', 'numeric','min:2','exists:roles,id']
+        ]);
+
+        if(!$user = User::find($id))
+        {
+            return abort(404);
+        }
+
+        if(!is_null($request->input('password')))
+        {
+            
+        }
+
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+        ]);
+
     }
 
     /**

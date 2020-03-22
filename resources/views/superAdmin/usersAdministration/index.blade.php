@@ -35,7 +35,7 @@
                 {data: 'id'},
                 {data: 'name'},
                 {data: 'email'},
-                {data: 'roles[0].name'},
+                {data: 'role'},
                 {data: 'btn'}
             ]
         });

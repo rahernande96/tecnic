@@ -21,6 +21,10 @@ class UserAdministrationController extends Controller
                 return $query->where('name','!=','SuperAdmin');
             }))
             ->addColumn('btn','superAdmin.usersAdministration.indexActions')
+            ->addColumn('role',function(User $user){
+                
+                return $user->roles->first()->name;
+            })
             ->rawColumns(['btn'])
             ->toJson();
 
